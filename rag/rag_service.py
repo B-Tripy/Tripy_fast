@@ -77,10 +77,12 @@ def query_rag(query_text: str, source_filter: str = None):
     # 1. Retrieve relevant docs
     where_clause = None
     if source_filter and source_filter != "All Documents":
-        where_clause = {"source": source_filter}
+        # where_clause = {"source": source_filter}
+        where_clause = {"source": "temp_2026년 1월 1일 ~ 2월 28일.txt"}
 
     if source_filter and source_filter != "All Documents":
-        where_clause = {"source": source_filter}
+        # where_clause = {"source": source_filter}
+        where_clause = {"source": "temp_2026년 1월 1일 ~ 2월 28일.txt"}
 
     col = get_collection()
     results = col.query(

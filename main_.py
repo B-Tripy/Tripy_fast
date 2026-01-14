@@ -1,4 +1,4 @@
-import ollama
+import olla
 import asyncio
 import httpx
 import uvicorn
@@ -50,7 +50,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 사용할 모델 이름 (미리 ollama pull <model>로 다운로드 필요, 예: ollama pull llama3.2)
+# 사용할 모델 이름 (미리 olla pull <model>로 다운로드 필요, 예: olla pull llama3.2)
 # MODEL = "llama3.2"
 
 # 앱 시작 시 모델 미리 로드 (preload)
@@ -58,7 +58,7 @@ app.add_middleware(
 async def preload_model():
     try:
         # 빈 프롬프트로 모델 로드 + 영구 유지
-        await ollama.AsyncClient().generate(
+        await olla.AsyncClient().generate(
             model=MODEL,
             prompt=" ",  # 빈 프롬프트 (또는 "preload" 같은 더미 텍스트)
             keep_alive=-1  # -1: 영구적으로 메모리에 유지
@@ -99,7 +99,7 @@ async def health_check():
 
         if response.status_code == 200:
             ollama_status = "healthy"
-            message = "fastapi & ollama 제대로 동작중"
+            message = "fastapi & olla 제대로 동작중"
         else:
             ollama_status = "unhealthy"
             message = f"Ollama returned status code: {response.status_code}"
@@ -135,7 +135,7 @@ async def translate(request: PoemsRequest):
                 {request.style}스타일로 시를 지어 주세요.
             """
     print(prompt)
-    response=await ollama.AsyncClient().generate(
+    response=await olla.AsyncClient().generate(
         model=MODEL,
         prompt=prompt,
         keep_alive=-1
@@ -162,7 +162,7 @@ async def chat(request: ChatRequest):
     user_message=request.message
     history.append({"role":"user","content":user_message})
     # print(user_message)
-    response=await ollama.AsyncClient().chat(
+    response=await olla.AsyncClient().chat(
         model=MODEL,
         messages=history,
         keep_alive=-1
@@ -218,7 +218,7 @@ async def stream(word: str):
 
 
 async def stream_generate(prompt: str):
-    stream = await ollama.AsyncClient().generate(
+    stream = await olla.AsyncClient().generate(
         model=MODEL,
         prompt=prompt,
         stream=True,
@@ -235,7 +235,7 @@ async def stream_generate(prompt: str):
 # @app.get("/chat")
 # async def generate(word: str, request: Request):
 #     try:
-#         response = await ollama.AsyncClient().generate(
+#         response = await olla.AsyncClient().generate(
 #             model=MODEL,
 #             prompt=word,
 #             options={"temperature": 1},
@@ -252,9 +252,9 @@ async def stream_generate(prompt: str):
 
 
 
-# @app.get("/ollama-test")
+# @app.get("/olla-test")
 # def ollama_test(request: Request):
-#     return templates.TemplateResponse("ollama-test.html", context={"request": request})
+#     return templates.TemplateResponse("olla-test.html", context={"request": request})
 
 
 ## 파라메터 전달용 class를 만들자.
@@ -275,7 +275,7 @@ async def stream_generate(prompt: str):
 #     # post방식으로 http요청을 해줌.
 #     prompt = f"{request.text}를 {request.max_length}자로 요약해주세요."
 #     print(prompt)
-#     response = await ollama.AsyncClient().generate(
+#     response = await olla.AsyncClient().generate(
 #         model=MODEL,
 #         prompt=prompt,
 #         keep_alive=-1
@@ -301,7 +301,7 @@ async def stream_generate(prompt: str):
 #                 {request.count}개만 추천해주세요.
 #             """
 #     print(prompt)
-#     response=await ollama.AsyncClient().generate(
+#     response=await olla.AsyncClient().generate(
 #         model=MODEL,
 #         prompt=prompt,
 #         keep_alive=-1
@@ -327,7 +327,7 @@ async def stream_generate(prompt: str):
 #     history.append({"role": "user", "content": request.message + ", 200글자 이내로 핵심만 답을 줘."})
 #     # 나는 user, ai는 assistant
 #
-#     response = await ollama.AsyncClient().chat(
+#     response = await olla.AsyncClient().chat(
 #         model=MODEL,
 #         messages=history,
 #         keep_alive=-1
