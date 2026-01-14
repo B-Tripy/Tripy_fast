@@ -76,6 +76,7 @@ async def generate(request: Request):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+
 # @app.post("/reset")
 # def reset_db(db: Session = Depends(get_db)):
 #     rag_service.reset_database()
