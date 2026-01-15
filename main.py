@@ -10,6 +10,7 @@ from routers import plan_router
 from routers import album_router
 from routers import recommend_router
 from routers import bookmark_router
+from routers import chatbot_router
 
 MODEL = "gemma3:1b"
 OLLAMA_BASE_URL = "http://localhost:11434"
@@ -58,6 +59,7 @@ app.include_router(plan_router.router)
 app.include_router(album_router.router)
 app.include_router(recommend_router.router)
 app.include_router(bookmark_router.router)
+app.include_router(chatbot_router.router)
 
 # -----------------------------
 # Ollama 모델 preload
