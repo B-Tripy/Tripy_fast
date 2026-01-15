@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="925a008c-0238-43d4-a733-70330040e2bd" name="변경" comment="앨범 라우터, 이미지 분류 모델" />
+    <list default="true" id="925a008c-0238-43d4-a733-70330040e2bd" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,7 +54,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "hdy"
+    "git-widget-placeholder": "yyb"
   }
 }]]></component>
   <component name="SharedIndexes">
@@ -96,5 +98,16 @@
     <MESSAGE value="Merge branch 'master' into hdy&#10;&#10;# Conflicts:&#10;#&#9;__pycache__/main.cpython-312.pyc&#10;#&#9;main.py&#10;#&#9;requirements.txt&#10;#&#9;routers/__pycache__/plan_router.cpython-312.pyc&#10;#&#9;routers/plan_router.py" />
     <MESSAGE value="앨범 라우터, 이미지 분류 모델" />
     <option name="LAST_COMMIT_MESSAGE" value="앨범 라우터, 이미지 분류 모델" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/routers/bookmark_router.py</url>
+          <line>1</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
