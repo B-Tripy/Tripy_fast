@@ -6,7 +6,8 @@ from typing import List
 import shutil
 import os
 from routers import plan_router
-import olla
+import ollama
+from db import plan_redis
 
 app = FastAPI(title="Samsung RAG Agent", description="RAG Chatbot with Black Theme")
 
@@ -30,14 +31,17 @@ OLLAMA_BASE_URL = "http://localhost:11434"
 # 앱 시작 시 모델 미리 로드 (preload)
 @app.on_event("startup")
 async def preload_model():
+    print("올라마 로딩 시작..======================")
     try:
         # 빈 프롬프트로 모델 로드 + 영구 유지
-        await olla.AsyncClient().generate(
+        await ollama.AsyncClient().generate(
             model=MODEL,
             prompt=" ",  # 빈 프롬프트 (또는 "preload" 같은 더미 텍스트)
             keep_alive=-1  # -1: 영구적으로 메모리에 유지
         )
         print(f"{MODEL} 모델이 미리 로드되었습니다. (메모리에 영구 유지)")
+
+        await plan_redis.preload_redis()
 
     except Exception as e:
         print(f"모델 preload 실패 : {e}")

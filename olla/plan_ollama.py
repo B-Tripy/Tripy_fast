@@ -14,4 +14,5 @@ async def plan(word: str):
         return {"result": response["response"]}
 
     except Exception as e:
-        print("에러 정보 >>>> ", e)
+        return {"error": str(e)}
+
