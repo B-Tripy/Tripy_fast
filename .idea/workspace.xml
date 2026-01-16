@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="925a008c-0238-43d4-a733-70330040e2bd" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/routers/chatbot_router.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/Tripy_fast.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Tripy_fast.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,12 +35,12 @@
     &quot;assignee&quot;: &quot;mic006016&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/B-Tripy/Tripy_fast.git",
-    "accountId": "a4f46246-0045-4b13-84ea-4b35121d05a7"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/B-Tripy/Tripy_fast.git&quot;,
+    &quot;accountId&quot;: &quot;a4f46246-0045-4b13-84ea-4b35121d05a7&quot;
   }
-}]]></component>
+}</component>
   <component name="PerforceDirect.Settings">
     <option name="CHARSET" value="none" />
   </component>
@@ -50,6 +48,9 @@
   &quot;associatedIndex&quot;: 2
 }</component>
   <component name="ProjectId" id="38EDTFqGhTgYCaU3rh5MqfG2uOb" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -61,7 +62,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "btm",
+    "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/blood/OneDrive/바탕 화면/3차프로젝트/Tripy_fast",
     "settings.editor.selected.configurable": "editor.preferences.fonts.default"
