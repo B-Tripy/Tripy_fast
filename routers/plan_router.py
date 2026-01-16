@@ -138,9 +138,10 @@ async def generate(request: PlanRequest):
 
         answer = await plan_ollama.plan(prompt)
 
-        # plan_redis를 import
-        # await  plan_redis.redis_insert(email, answer)
         print("🔥 Ollama 응답:", answer)
+
+        # plan_redis를 import
+        await  plan_redis.redis_insert(request.email, answer)
 
         return answer
 
