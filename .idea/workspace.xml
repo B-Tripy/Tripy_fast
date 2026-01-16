@@ -4,10 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="925a008c-0238-43d4-a733-70330040e2bd" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/Tripy_fast.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Tripy_fast.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+=======
+    <list default="true" id="925a008c-0238-43d4-a733-70330040e2bd" name="변경" comment="Merge branch 'master' of https://github.com/B-Tripy/Tripy_fast&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;__pycache__/main.cpython-312.pyc&#10;#&#9;db/__pycache__/__init__.cpython-312.pyc&#10;#&#9;db/__pycache__/recommend_mysql.cpython-312.pyc&#10;#&#9;olla/__pycache__/plan_ollama.cpython-312.pyc&#10;#&#9;rag/__pycache__/rag_service.cpython-312.pyc&#10;#&#9;routers/__pycache__/__init__.cpython-312.pyc&#10;#&#9;routers/__pycache__/album_router.cpython-312.pyc&#10;#&#9;routers/__pycache__/bookmark_router.cpython-312.pyc&#10;#&#9;routers/__pycache__/chatbot_router.cpython-312.pyc&#10;#&#9;routers/__pycache__/plan_router.cpython-312.pyc&#10;#&#9;routers/__pycache__/recommend_router.cpython-312.pyc">
+      <change afterPath="$PROJECT_DIR$/chroma_db/6d5c0550-5a0e-4a17-9f8f-b8c57b616d77/data_level0.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chroma_db/6d5c0550-5a0e-4a17-9f8f-b8c57b616d77/header.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chroma_db/6d5c0550-5a0e-4a17-9f8f-b8c57b616d77/length.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chroma_db/6d5c0550-5a0e-4a17-9f8f-b8c57b616d77/link_lists.bin" afterDir="false" />
+>>>>>>> master
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chroma_db/8ac15742-d5a5-4e41-abd5-0a3a4fbae5bd/length.bin" beforeDir="false" afterPath="$PROJECT_DIR$/chroma_db/8ac15742-d5a5-4e41-abd5-0a3a4fbae5bd/length.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chroma_db/chroma.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/chroma_db/chroma.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/plan_redis.py" beforeDir="false" afterPath="$PROJECT_DIR$/db/plan_redis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/olla/plan_ollama.py" beforeDir="false" afterPath="$PROJECT_DIR$/olla/plan_ollama.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/plan_router.py" beforeDir="false" afterPath="$PROJECT_DIR$/routers/plan_router.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,13 +53,19 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/B-Tripy/Tripy_fast.git&quot;,
-    &quot;accountId&quot;: &quot;d24b84d2-8d7c-4b93-87f2-ffcea6482c3b&quot;
+    &quot;accountId&quot;: &quot;a4f46246-0045-4b13-84ea-4b35121d05a7&quot;
   }
 }</component>
+  <component name="PerforceDirect.Settings">
+    <option name="CHARSET" value="none" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
   <component name="ProjectId" id="38EDTFqGhTgYCaU3rh5MqfG2uOb" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -56,8 +77,15 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+<<<<<<< HEAD
     "git-widget-placeholder": "ksh",
     "node.js.selected.package.tslint": "(autodetect)"
+=======
+    "git-widget-placeholder": "master 병합 중",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/blood/OneDrive/바탕 화면/3차프로젝트/Tripy_fast",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
+>>>>>>> master
   }
 }]]></component>
   <component name="SharedIndexes">
@@ -109,6 +137,11 @@
           <url>file://$PROJECT_DIR$/routers/bookmark_router.py</url>
           <line>1</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/db/recommend_mysql.py</url>
+          <line>1</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
