@@ -75,7 +75,7 @@ class PlanRequest(BaseModel):
     ageGroup: str | None = ""
     purpose: str | None = ""
     extra: str | None = ""
-    email: str | None = ""
+    userId: int
 
 # 일반 generate 엔드포인트 (스트리밍 없이 전체 응답)
 # @router.post("/")
@@ -141,7 +141,8 @@ async def generate(request: PlanRequest):
         print("🔥 Ollama 응답:", answer)
 
         # plan_redis를 import
-        await  plan_redis.redis_insert(request.email, answer)
+        print("================>> " + str(request.userId))
+        await  plan_redis.redis_insert("plan:" + str(request.userId), answer)
 
         return answer
 
@@ -150,9 +151,8 @@ async def generate(request: PlanRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-#
-#
-# @router.post("/reset")
-# def reset_rag():
-#     rag_service.reset_database()
-#     return {"status": "RAG index reset"}
+@router.get("/select")
+def redis_get(request: PlanRequest):
+    print(request.userId)
+    answer = plan_redis.redis_select(str(request.userId))
+    return answer
