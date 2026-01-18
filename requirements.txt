@@ -30,3 +30,5 @@ langchain-text-splitters
 python-dotenv
 sentence_transformers
 tf-keras
+
+aiomysql

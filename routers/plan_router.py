@@ -1,6 +1,8 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
+from db import plan_redis
 from olla import plan_ollama
 
 from sqlalchemy.orm import Session
@@ -16,13 +18,13 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 from fastapi import APIRouter
 
 router = APIRouter(
-    prefix="/plan",
-    tags=["plan"],
+    prefix="/ai/plan",
+        tags=["plan"],
 )
 
-@router.get("")
-def plan_check():
-    return {"status": "plan_ok"}
+# @router.get("")
+# def plan_check():
+#     return {"status": "plan_ok"}
 
 
 @router.post("/upload")
@@ -62,24 +64,95 @@ def get_stats():
 
         # "result" : "ok"
     }
+class PlanRequest(BaseModel):
+    departure: str
+    destination: str
+    startDate: str
+    endDate: str
+    people: str
+    activities: List[str]
+    food: str | None = ""
+    ageGroup: str | None = ""
+    purpose: str | None = ""
+    extra: str | None = ""
+    userId: int
 
 # 일반 generate 엔드포인트 (스트리밍 없이 전체 응답)
-@router.get("/plan")
-async def generate(request: Request):
-    # form에 넣어놓은 데이터를 다 거내서 변수에 넣어주어야함.
-    try :
-        word = "제주도";
-        answer = await plan_ollama.plan(word);
+# @router.post("/")
+# async def generate(request: Request):
+#     # form에 넣어놓은 데이터를 다 거내서 변수에 넣어주어야함.
+#     try :
+#
+#         # 내일은 form데이터 가지고 와서 하나의 문자열로 연결해서 word에 넣어줘도 되고
+#         # axios로 값을 전달할 때 보내는 쪽에서 json으로 가지고 오면
+#         # json으로 가지고 온 데이터를 word로 통째로 넣어줘도 됨.!!
+#         prompt = f"""
+#         너는 여행 일정 플래너 AI야.
+#
+#         - 출발지: {request.departure}
+#         - 목적지: {request.destination}
+#         - 여행 기간: {request.startDate} ~ {request.endDate}
+#         - 인원: {request.people}명
+#         - 선호 활동: {", ".join(request.activities)}
+#         - 음식 선호: {request.food}
+#         - 연령대: {request.ageGroup}
+#         - 여행 목적: {request.purpose}
+#         - 추가 요청: {request.extra}
+#
+#         위 조건을 반영해서
+#         1일차, 2일차 형식으로
+#         아침 / 점심 / 저녁 / 추천 장소를 포함해
+#         일정을 만들어줘.
+#         """
+#         answer = await plan_ollama.plan(prompt)
+#         return answer
+#
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
+@router.post("/")
+async def generate(request: PlanRequest):
+    try:
+        print("🔥 받은 데이터:", request)
+
+        prompt = f"""
+         너는 여행 일정 플래너 AI야.
+
+         - 출발지: {request.departure}
+         - 목적지: {request.destination}
+         - 여행 기간: {request.startDate} ~ {request.endDate}
+         - 인원: {request.people}명
+         - 선호 활동: {", ".join(request.activities)}
+         - 음식 선호: {request.food}
+         - 연령대: {request.ageGroup}
+         - 여행 목적: {request.purpose}
+         - 추가 요청: {request.extra}
+
+         위 조건을 반영해서
+         1일차, 2일차 형식으로
+         아침 / 점심 / 저녁 / 추천 장소를 포함해
+         일정을 만들어줘.
+         
+        """
+
+        print("🔥 생성된 프롬프트:", prompt)
+
+        answer = await plan_ollama.plan(prompt)
+
+        print("🔥 Ollama 응답:", answer)
+
+        # plan_redis를 import
+        print("================>> " + str(request.userId))
+        await  plan_redis.redis_insert("plan:" + str(request.userId), answer)
+
         return answer
 
     except Exception as e:
+        print("🔥 서버 에러:", e)
         raise HTTPException(status_code=500, detail=str(e))
 
 
-
-# @app.post("/reset")
-# def reset_db(db: Session = Depends(get_db)):
-#     rag_service.reset_database()
-#     db.query(ChatMessage).delete()
-#     db.commit()
-#     return {"status": "Database Reset"}
+@router.get("/select/{userId}")
+async def redis_get(userId: int):
+    print(userId)
+    answer = await plan_redis.redis_select(str(userId))
+    return answer
