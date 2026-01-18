@@ -15,8 +15,10 @@ router = APIRouter(
 # -----------------------------------------------------------
 # 1. 설정 및 클래스 정의
 # -----------------------------------------------------------
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 프로젝트 루트 경로 계산
-MODEL_PATH = os.path.join(BASE_DIR, "model", "efficientnet_v2_final.pth")
+# 로컬 개발 시
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 프로젝트 루트 경로 계산
+# MODEL_PATH = os.path.join(BASE_DIR, "model", "efficientnet_v2_final.pth")
+
 CLASSES = ['건물', '문화', '음식', '숲', '산', '인물', '바다', '거리']
 
 
@@ -41,8 +43,25 @@ def load_model(app_state):
     서버 시작 시 모델을 로드하여 app.state에 저장하는 함수
     """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"[Album] {MODEL_PATH}에서 {device}로 모델 로드중...")
+    
+    model_paths = [
+        "/app/model/efficientnet_v2_final.pth",
+        os.path.join(os.getcwd(), "model", "efficientnet_v2_final.pth")
+    ]
 
+    final_model_path = None
+    for path in model_paths:
+        if os.path.exists(path):
+            final_model_path = path
+            break
+        
+    if final_model_path is None:
+        print("\n[CRITICAL ERROR] 모델 파일을 찾을 수 없습니다.")
+        return
+    
+    print(f"[Album] 모델 파일 발견: {final_model_path}")
+    print(f"[Album] {device}로 모델 로딩 시작...")
+    
     try:
         # 모델 구조 생성
         model = models.efficientnet_v2_s(weights=None)
@@ -55,13 +74,8 @@ def load_model(app_state):
         )
 
         # 가중치 로드
-        if os.path.exists(MODEL_PATH):
-            checkpoint = torch.load(MODEL_PATH, map_location=device)
-            model.load_state_dict(checkpoint)
-        else:
-            print(f"[Error] 모델 파일이 없습니다: {MODEL_PATH}")
-            # 개발 중 파일이 없을 때를 대비한 예외처리 (필요 시 제거)
-            # raise FileNotFoundError(f"Model not found at {MODEL_PATH}")
+        checkpoint = torch.load(final_model_path, map_location=device)
+        model.load_state_dict(checkpoint)
 
         model.to(device)
         model.eval()
@@ -98,13 +112,14 @@ def plan_check():
     return {"status": "album_ok"}
 
 
-@router.post("/category")  # URL: /album/predict
+@router.post("/category")  # URL: /album/category
 async def predict_image(request: Request, file: UploadFile = File(...)):
     # app.state에서 모델 꺼내기
     model = getattr(request.app.state, "model", None)
     device = getattr(request.app.state, "device", "cpu")
 
     if model is None:
+        print("503 Error 발생: 모델이 None 상태입니다. 서버 시작 로그를 확인하세요.")
         raise HTTPException(status_code=503, detail="AI 모델이 로드되지 않았습니다.")
 
     try:
