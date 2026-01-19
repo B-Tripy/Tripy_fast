@@ -109,7 +109,7 @@ class PlanRequest(BaseModel):
 #
 #     except Exception as e:
 #         raise HTTPException(status_code=500, detail=str(e))
-@router.post("/")
+@router.post("")
 async def generate(request: PlanRequest):
     try:
         print("🔥 받은 데이터:", request)
