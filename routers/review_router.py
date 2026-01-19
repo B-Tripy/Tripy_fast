@@ -14,7 +14,7 @@ OLLAMA_BASE_URL = "http://localhost:11434"
 class ReviewRequest(BaseModel):
     post: str
     tripId: str
-
+##test
 @router.post("")
 async def review_end(request: ReviewRequest):
     print(request.post)
