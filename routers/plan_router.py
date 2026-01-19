@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from db import plan_redis
+from db import plan_mysql
 from olla import plan_ollama
 
 from sqlalchemy.orm import Session
@@ -114,9 +114,23 @@ async def generate(request: PlanRequest):
     try:
         print("🔥 받은 데이터:", request)
 
+
+        ### 크로마 pdf읽어와서 그거를 prompt에 넣어주면 됨.
+
+        query_text = f'''
+            {request.destination}지역의 
+            휴관일을 아주 간단하게 답답형으로 알려줘.
+        '''
+
+        rag_info = await rag_service.query_rag_info(query_text)
+
+        print(rag_info)
         prompt = f"""
          너는 여행 일정 플래너 AI야.
-
+        목적지: {request.destination} 의 휴관일이야
+        해당 지역에 휴관일도 같이 결과로 넣어줘.
+        휴관일 정보는 {rag_info}야.
+        
          - 출발지: {request.departure}
          - 목적지: {request.destination}
          - 여행 기간: {request.startDate} ~ {request.endDate}
@@ -140,9 +154,20 @@ async def generate(request: PlanRequest):
 
         print("🔥 Ollama 응답:", answer)
 
-        # plan_redis를 import
+        # plan_mysql를 import
         print("================>> " + str(request.userId))
-        await  plan_redis.redis_insert("plan:" + str(request.userId), answer)
+        # await  plan_redis.redis_insert("plan:" + str(request.userId), answer)
+        plan_mysql.create_plan(
+            title=request.departure,
+            description=request.destination,
+            start_date= request.startDate,
+            end_date= request.endDate,
+            plan=answer['result']
+        )
+
+        tripId = plan_mysql.read_plan_last()
+
+        plan_mysql.create_usertrip(request.userId, tripId)
 
         return answer
 
@@ -154,5 +179,5 @@ async def generate(request: PlanRequest):
 @router.get("/select")
 def redis_get(request: PlanRequest):
     print(request.userId)
-    answer = plan_redis.redis_select(str(request.userId))
-    return answer
+    # # answer = plan_redis.redis_select(str(request.userId))
+    # return answer

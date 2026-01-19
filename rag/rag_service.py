@@ -62,7 +62,7 @@ def ingest_document(file_path: str, original_filename: str):
     chunks = TEXT_SPLITTER.split_text(text)
     
     ids = [str(uuid.uuid4()) for _ in chunks]
-    metadatas = [{"source": original_filename} for _ in chunks]
+    metadatas = [{"source": original_filename[:-4]} for _ in chunks]
     
     print(f"Adding {len(chunks)} chunks to collection...")
     col = get_collection()
@@ -73,16 +73,28 @@ def ingest_document(file_path: str, original_filename: str):
     )
     return len(chunks)
 
+
+async def query_rag_info(query_text:str, source_filter: str = None):
+    # 1. Retrieve relevant docs
+    where_clause = None
+    where_clause = {"source": "2026년 1월 1일 ~ 2월 28일.pdf"}
+
+    col = get_collection()
+    results = col.query(
+        query_texts=[query_text],
+        n_results=3,
+        where=where_clause
+    )
+
+    context_text = "\n\n".join(results['documents'][0])
+    return context_text
+
 def query_rag(query_text: str, source_filter: str = None):
     # 1. Retrieve relevant docs
     where_clause = None
     if source_filter and source_filter != "All Documents":
         # where_clause = {"source": source_filter}
-        where_clause = {"source": "temp_2026년 1월 1일 ~ 2월 28일.txt"}
-
-    if source_filter and source_filter != "All Documents":
-        # where_clause = {"source": source_filter}
-        where_clause = {"source": "temp_2026년 1월 1일 ~ 2월 28일.txt"}
+        where_clause = {"source": "2026년 1월 1일 ~ 2월 28일.pdf"}
 
     col = get_collection()
     results = col.query(
@@ -133,16 +145,17 @@ def get_unique_sources():
             sources.add(meta["source"])
     return list(sources)
 
-def reset_database():
-    global chroma_client, collection
-    
-    # Ensure initialized to delete? Or just try?
-    if chroma_client is None: 
-         get_collection() # Initialize first
-         
-    chroma_client.delete_collection("samsung_docs")
-    # Re-create immediately
-    # Force re-init of collection obj
-    collection = None
-    get_collection()
-    return True
+# def reset_database():
+#     global chroma_client, collection
+#
+#     # Ensure initialized to delete? Or just try?
+#     if chroma_client is None:
+#          get_collection() # Initialize first
+#
+#     chroma_client.delete_collection("samsung_docs")
+#     # Re-create immediately
+#     # Force re-init of collection obj
+#     collection = None
+#     get_collection()
+#     return True
+
