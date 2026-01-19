@@ -5,10 +5,11 @@ import ollama
 from db import recommend_mysql
 import json
 import re
+import os
 
 router = APIRouter(prefix="/ai", tags=["recommend"])
 
-MODEL = "gemma3:1b"
+MODEL = os.getenv("OLLAMA_MODEL", "gemma3:1b")
 
 # -----------------------------
 # 안전한 JSON 파싱

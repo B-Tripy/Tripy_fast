@@ -8,14 +8,15 @@ from pydantic import BaseModel
 
 from fastapi import APIRouter
 
+import os
 import ollama
 
 router = APIRouter(
     prefix="/chatbot",
     tags=["chatbot"],
 )
-MODEL = "gemma3:1b"
-OLLAMA_BASE_URL = "http://localhost:11434"
+MODEL = os.getenv("OLLAMA_MODEL", "gemma3:1b")
+OLLAMA_BASE_URL = os.getenv("OLLAMA_HOST", "http://localhost:11434") 
 
 class ChatRequest(BaseModel):
     message: str  # 사용자가 입력한 질문
