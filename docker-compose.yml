@@ -4,6 +4,7 @@ services:
   # 1. FastAPI 서버 (딥러닝 모델 + 로직)
   fastapi-server:
     build: .
+    image: tripy-fastapi
     container_name: fastapi
     ports:
       - "8000:8000"
