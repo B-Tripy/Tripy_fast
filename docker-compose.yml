@@ -19,7 +19,7 @@ services:
       - .env
     environment:
       - REDIS_HOST=tripy_redis
-      - OLLAMA_HOST=http://ollama:11434 # Ollama 컨테이너 주소
+      # - OLLAMA_HOST=http://ollama:11434 # Ollama 컨테이너 주소
       - CHROMA_HOST=chroma # Chroma 컨테이너 주소
       - CHROMA_PORT=8000
 
