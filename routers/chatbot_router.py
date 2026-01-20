@@ -16,7 +16,7 @@ router = APIRouter(
     tags=["chatbot"],
 )
 MODEL = os.getenv("OLLAMA_MODEL", "gemma3:4b")
-OLLAMA_BASE_URL = os.getenv("OLLAMA_HOST", "http://localhost:11434") 
+OLLAMA_BASE_URL = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 
 class ChatRequest(BaseModel):
     message: str  # 사용자가 입력한 질문
@@ -30,10 +30,16 @@ async def ask_chatbot(request: ChatRequest):
         # 비동기 클라이언트 생성
         client = ollama.AsyncClient(host=OLLAMA_BASE_URL)
 
+        query_text =  f'''
+            넌 여행 플레너 ai 챗봇이야
+            {request.message}를 "여행" 키워드와 
+            밀접한 답변으로 500자 이내로 설명해줘.        
+        '''
+
         # 모델 생성 요청
         response = await client.generate(
             model=MODEL,
-            prompt=request.message,
+            prompt=query_text,
             options={
                 "temperature": 0.7,  # 창의성 조절
             },

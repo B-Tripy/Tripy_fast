@@ -3,7 +3,10 @@ from redis.asyncio import Redis  # redis-py의 async 클라이언트
 import json
 # Redis 설정 (로컬 개발 기준, 프로덕션에서는 환경변수로 관리)
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-REDIS_URL = "redis://{REDIS_HOST}:{REDIS_PORT}"
+REDIS_PORT = os.getenv("REDIS_PORT", "6379")
+
+REDIS_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}"
+
 redis_con = None
 
 async def preload_redis():
