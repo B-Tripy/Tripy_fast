@@ -77,7 +77,7 @@ def ingest_document(file_path: str, original_filename: str):
 async def query_rag_info(query_text:str, source_filter: str = None):
     # 1. Retrieve relevant docs
     where_clause = None
-    where_clause = {"source": "2026년 1월 1일 ~ 2월 28일"}
+    where_clause = {"source": "2026년 1월 1일 ~ 2월 28일.pdf"}
 
     col = get_collection()
     results = col.query(

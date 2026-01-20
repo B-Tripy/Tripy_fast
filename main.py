@@ -4,6 +4,9 @@ from contextlib import asynccontextmanager
 import os
 import ollama
 from db import plan_redis
+import os
+from dotenv import load_dotenv
+
 # -----------------------------
 # Routers
 # -----------------------------
@@ -12,12 +15,16 @@ from routers import album_router
 from routers import recommend_router
 from routers import bookmark_router
 from routers import chatbot_router
+from routers import theme_router
 from routers import review_router
 
 
-MODEL = os.getenv("OLLAMA_MODEL", "gemma3:1b")
+# .env 파일 로드
+load_dotenv()
+MODEL = os.getenv("OLLAMA_MODEL","gemma3:4b")
+OLLAMA_BASE_URL = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+# MODEL = os.getenv("OLLAMA_MODEL", "gemma3:1b")
 # OLLAMA_BASE_URL = "http://localhost:11434"    # 로컬
-OLLAMA_BASE_URL = os.getenv("OLLAMA_HOST", "http://localhost:11434")   # Docker
 
 
 # -----------------------------
@@ -69,7 +76,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # -----------------------------
 # Router 등록
 # -----------------------------
@@ -78,6 +84,7 @@ app.include_router(album_router.router)
 app.include_router(recommend_router.router)
 app.include_router(bookmark_router.router)
 app.include_router(chatbot_router.router)
+app.include_router(theme_router.router)
 app.include_router(review_router.router)
 
 # -----------------------------

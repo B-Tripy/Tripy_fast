@@ -23,7 +23,7 @@ class ChatRequest(BaseModel):
     userId: int
 
 
-@router.post("/")
+@router.post("")
 async def ask_chatbot(request: ChatRequest):
 
     try:
