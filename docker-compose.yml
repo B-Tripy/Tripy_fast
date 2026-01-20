@@ -23,16 +23,16 @@ services:
       - CHROMA_HOST=chroma # Chroma 컨테이너 주소
       - CHROMA_PORT=8000
 
-  # 2. Ollama (LLM 실행 엔진)
-  tripy_ollama:
-    image: ollama/ollama:latest
-    container_name: ollama
-    networks:
-      - tripyserver
-    ports:
-      - "11434:11434" # 외부에서 테스트할 때 필요
-    volumes:
-      - ollama_storage:/root/.ollama # 모델 다운로드 데이터 보존 (중요!)
+  # # 2. Ollama (LLM 실행 엔진)
+  # tripy_ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: ollama
+  #   networks:
+  #     - tripyserver
+  #   ports:
+  #     - "11434:11434" # 외부에서 테스트할 때 필요
+  #   volumes:
+  #     - ollama_storage:/root/.ollama # 모델 다운로드 데이터 보존 (중요!)
 
   # 3. ChromaDB (벡터 데이터베이스)
   tripy_chroma:
