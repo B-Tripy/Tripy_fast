@@ -17,7 +17,7 @@ async def preload_redis():
 
 async def redis_insert(user_id, answer):
         print("redis_con >> " , redis_con)
-        await redis_con.rpush(user_id, json.dumps(answer))
+        await redis_con.rpush("plan:" + str(user_id), json.dumps(answer))
 
 
 async def redis_select(user_id):

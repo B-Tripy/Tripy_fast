@@ -176,6 +176,7 @@ async def generate(request: PlanRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+
 @router.get("/select")
 def redis_get(request: PlanRequest):
     print(request.userId)

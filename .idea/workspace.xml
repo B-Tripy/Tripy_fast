@@ -4,13 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="925a008c-0238-43d4-a733-70330040e2bd" name="변경" comment="">
+<<<<<<< HEAD
+    <list default="true" id="925a008c-0238-43d4-a733-70330040e2bd" name="변경" comment="Merge branch 'master' of https://github.com/B-Tripy/Tripy_fast&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;__pycache__/main.cpython-312.pyc&#10;#&#9;db/__pycache__/__init__.cpython-312.pyc&#10;#&#9;db/__pycache__/recommend_mysql.cpython-312.pyc&#10;#&#9;olla/__pycache__/plan_ollama.cpython-312.pyc&#10;#&#9;rag/__pycache__/rag_service.cpython-312.pyc&#10;#&#9;routers/__pycache__/__init__.cpython-312.pyc&#10;#&#9;routers/__pycache__/album_router.cpython-312.pyc&#10;#&#9;routers/__pycache__/bookmark_router.cpython-312.pyc&#10;#&#9;routers/__pycache__/chatbot_router.cpython-312.pyc&#10;#&#9;routers/__pycache__/plan_router.cpython-312.pyc&#10;#&#9;routers/__pycache__/recommend_router.cpython-312.pyc">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+=======
+    <list default="true" id="925a008c-0238-43d4-a733-70330040e2bd" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Tripy_fast.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Tripy_fast.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+>>>>>>> 194e9b10c82279102600e252c13eaba826d6675e
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chroma_db/6d5c0550-5a0e-4a17-9f8f-b8c57b616d77/data_level0.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chroma_db/6d5c0550-5a0e-4a17-9f8f-b8c57b616d77/header.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chroma_db/6d5c0550-5a0e-4a17-9f8f-b8c57b616d77/length.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chroma_db/6d5c0550-5a0e-4a17-9f8f-b8c57b616d77/link_lists.bin" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,10 +41,17 @@
     &quot;assignee&quot;: &quot;mic006016&quot;
   }
 }</component>
+<<<<<<< HEAD
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/B-Tripy/Tripy_fast.git",
+    "accountId": "53440615-114a-493c-a660-fcfbff23fa64"
+=======
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/B-Tripy/Tripy_fast.git&quot;,
     &quot;accountId&quot;: &quot;a4f46246-0045-4b13-84ea-4b35121d05a7&quot;
+>>>>>>> 194e9b10c82279102600e252c13eaba826d6675e
   }
 }</component>
   <component name="PerforceDirect.Settings">
@@ -51,29 +61,35 @@
   &quot;associatedIndex&quot;: 2
 }</component>
   <component name="ProjectId" id="38EDTFqGhTgYCaU3rh5MqfG2uOb" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.plan_mysql.executor&quot;: &quot;Run&quot;,
-    &quot;Python.plan_redis.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;esy&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/blood/OneDrive/바탕 화면/3차프로젝트/Tripy_fast&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/pc/Desktop/3차프로젝트/Tripy_fast/routers",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\pc\Desktop\3차프로젝트\Tripy_fast\routers" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-164cda30dcd9-0af03a5fa574-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.26830.99" />
+        <option value="bundled-python-sdk-07523f343e4f-968fe969f28a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.28539.27" />
       </set>
     </attachedChunks>
   </component>
