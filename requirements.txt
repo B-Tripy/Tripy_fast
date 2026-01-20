@@ -12,9 +12,23 @@ Jinja2
 ollama
 redis==5.2.0
 
+# Deeplearning
+torch
+torchvision
+Pillow
+
 #chroma-db
 chromadb==0.5.23
 pymupdf
 python-multipart
- django-cors-headers
- python-dotenv
+django-cors-headers
+python-dotenv
+
+sqlalchemy
+pypdf
+langchain-text-splitters
+python-dotenv
+sentence_transformers
+tf-keras
+
+aiomysql
