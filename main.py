@@ -12,11 +12,12 @@ from routers import album_router
 from routers import recommend_router
 from routers import bookmark_router
 from routers import chatbot_router
+from routers import review_router
 
 
-MODEL = "gemma3:1b"
+MODEL = os.getenv("OLLAMA_MODEL", "gemma3:1b")
 # OLLAMA_BASE_URL = "http://localhost:11434"    # 로컬
-OLLAMA_BASE_URL = os.getenv("OLLAMA_HOST", "http://ollama:11434")   # Docker
+OLLAMA_BASE_URL = os.getenv("OLLAMA_HOST", "http://localhost:11434")   # Docker
 
 
 # -----------------------------
@@ -35,11 +36,10 @@ async def lifespan(app: FastAPI):
         )
         print(f"{MODEL} 모델이 미리 로드되었습니다. (메모리에 영구 유지)")
 
-        await plan_redis.preload_redis()
-        
+
         # album_router 모델 로드
         album_router.load_model(app.state)
-   
+
         yield  # 서버 가동 중
 
         print("----- Server Shutting Down -----")
@@ -78,7 +78,7 @@ app.include_router(album_router.router)
 app.include_router(recommend_router.router)
 app.include_router(bookmark_router.router)
 app.include_router(chatbot_router.router)
-
+app.include_router(review_router.router)
 
 # -----------------------------
 # Root 엔드포인트

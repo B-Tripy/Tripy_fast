@@ -2,19 +2,20 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List
 from olla.review_ollama import review
+import os
 
 
 router = APIRouter(
     prefix="/ai/review",
     tags=["review"],
 )
-MODEL = "gemma3:1b"
-OLLAMA_BASE_URL = "http://localhost:11434"
+MODEL = os.getenv("OLLAMA_MODEL", "gemma3:1b")
+OLLAMA_BASE_URL = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 
 class ReviewRequest(BaseModel):
     post: str
     tripId: str
-
+##test
 @router.post("")
 async def review_end(request: ReviewRequest):
     print(request.post)

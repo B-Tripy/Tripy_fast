@@ -1,6 +1,7 @@
 # static 변수 사용
 from __future__ import annotations
 
+import os
 import uuid
 from typing import List, Optional, Dict, Any
 
@@ -19,11 +20,11 @@ class ChromaRAG:
     # 생성형 모델 : llama3:1b, gemma3:1bf
 
     def __init__(self,
-                 chroma_dir : str = './chroma_data',
-                 collection_name : str = 'rag_docs',
-                 ollama_base_url : str = 'http://localhost:11434',
-                 embed_model : str = 'nomic-embed-text',
-                 gen_model :str = 'gemma3:1b'):
+                 chroma_dir : str = os.getenv('CHROMA_DIR', './chroma_data'),
+                 collection_name : str = os.getenv('COLLECTION_NAME', 'rag_docs'),
+                 ollama_base_url : str = os.getenv('OLLAMA_HOST', 'http://localhost:11434'),
+                 embed_model : str = os.getenv('EMBED_MODEL', 'nomic-embed-text'),
+                 gen_model :str = os.getenv('OLLAMA_MODEL', 'gemma3:1b')):
 
          # Ollama 설정
         self.ollama_base_url = ollama_base_url

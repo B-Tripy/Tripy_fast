@@ -1,10 +1,11 @@
+import os
 import ollama
 from fastapi import HTTPException
 from typing import List
 
-MODEL = "gemma3:1b"
+MODEL = os.getenv("OLLAMA_MODEL", "gemma3:1b")
 # OLLAMA_BASE_URL = "http://localhost:11434"    # 로컬
-OLLAMA_BASE_URL = os.getenv("OLLAMA_HOST", "http://ollama:11434")   # Docker
+OLLAMA_BASE_URL = os.getenv("OLLAMA_HOST", "http://localhost:11434")   # Docker
 
 async def review(post: str):
     if not post:

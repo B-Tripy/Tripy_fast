@@ -1,15 +1,16 @@
 # mysql연결하는 것처럼 포트 11434인 올라마서버에 연결하는 모듈
 from fastapi import HTTPException
+import os
 import requests
 
 # http서버이므로 http연결하는 모듈 필요함.
 # 순서대로 호출해서 받을 것이면 requests(*), tablib.request
 # 동시에 호출해서 받을 것이면 httpx
 # Ollama 기본 설정
-OLLAMA_BASE_URL = "http://localhost:11434"  # Ollama 기본 포트
+OLLAMA_BASE_URL = os.getenv("OLLAMA_HOST", "http://localhost:11434")  # Ollama 기본 포트
 # DEFAULT_MODEL = "llama3.2"
 # DEFAULT_MODEL = "gemma3:4b"
-DEFAULT_MODEL="gemma3:1b"
+DEFAULT_MODEL=os.getenv("OLLAMA_MODEL", "gemma3:1b")
 def ollama_client(DEFAULT_MODEL:str,word : str):
     # word가 없으면 올라마 서버 호출할 필요없음.
     if not word or word.strip() == "":
