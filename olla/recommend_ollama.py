@@ -4,7 +4,7 @@ import ollama
 import re
 import json
 
-MODEL = os.getenv("OLLAMA_MODEL", "gemma3:1b")
+MODEL = os.getenv("OLLAMA_MODEL", "gemma3:4b")
 
 def safe_json_parse(raw: str):
     """AI가 반환한 JSON 문자열을 안전하게 파싱"""

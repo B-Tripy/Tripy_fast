@@ -10,7 +10,7 @@ import requests
 OLLAMA_BASE_URL = os.getenv("OLLAMA_HOST", "http://localhost:11434")  # Ollama 기본 포트
 # DEFAULT_MODEL = "llama3.2"
 # DEFAULT_MODEL = "gemma3:4b"
-DEFAULT_MODEL=os.getenv("OLLAMA_MODEL", "gemma3:1b")
+DEFAULT_MODEL=os.getenv("OLLAMA_MODEL", "gemma3:4b")
 def ollama_client(DEFAULT_MODEL:str,word : str):
     # word가 없으면 올라마 서버 호출할 필요없음.
     if not word or word.strip() == "":

@@ -18,7 +18,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
 import uuid
 
-MODEL_NAME = os.getenv("OLLAMA_MODEL", "gemma3:1b")
+MODEL_NAME = os.getenv("OLLAMA_MODEL", "gemma3:4b")
 
 TEXT_SPLITTER = RecursiveCharacterTextSplitter(chunk_size=250, chunk_overlap=100)
 

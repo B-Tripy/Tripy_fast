@@ -9,7 +9,7 @@ import os
 
 router = APIRouter(prefix="/ai", tags=["recommend"])
 
-MODEL = os.getenv("OLLAMA_MODEL", "gemma3:1b")
+MODEL = os.getenv("OLLAMA_MODEL", "gemma3:4b")
 
 # -----------------------------
 # 안전한 JSON 파싱

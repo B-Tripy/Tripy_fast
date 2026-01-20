@@ -17,14 +17,14 @@ class ChromaRAG:
     # ollama설정
     # 올라마 url : http://localhost:11434
     # 인베딩 모델 : nomic-embed-text
-    # 생성형 모델 : llama3:1b, gemma3:1bf
+    # 생성형 모델 : llama3:1b, gemma3:4bf
 
     def __init__(self,
                  chroma_dir : str = os.getenv('CHROMA_DIR', './chroma_data'),
                  collection_name : str = os.getenv('COLLECTION_NAME', 'rag_docs'),
                  ollama_base_url : str = os.getenv('OLLAMA_HOST', 'http://localhost:11434'),
                  embed_model : str = os.getenv('EMBED_MODEL', 'nomic-embed-text'),
-                 gen_model :str = os.getenv('OLLAMA_MODEL', 'gemma3:1b')):
+                 gen_model :str = os.getenv('OLLAMA_MODEL', 'gemma3:4b')):
 
          # Ollama 설정
         self.ollama_base_url = ollama_base_url
@@ -59,7 +59,7 @@ class ChromaRAG:
     def generate(self, prompt: str) -> str:
         url = self.ollama_base_url + '/api/generate'
         payload = {
-            "model": self.gen_model,  # gemma3:1b
+            "model": self.gen_model,  # gemma3:4b
             "prompt": prompt,
             "stream": False,
             "options": {
