@@ -3,6 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import ollama
 from db import plan_redis
+
+import os
+from dotenv import load_dotenv
+
 # -----------------------------
 # Routers
 # -----------------------------
@@ -11,9 +15,18 @@ from routers import album_router
 from routers import recommend_router
 from routers import bookmark_router
 from routers import chatbot_router
+from routers import theme_router
 from routers import review_router
-MODEL = "gemma3:1b"
-OLLAMA_BASE_URL = "http://localhost:11434"
+
+# .env 파일 로드
+load_dotenv()
+MODEL = os.getenv("OLLAMA_MODEL","gemma3:4b")
+OLLAMA_BASE_URL = os.getenv("OLLAMA_HOST")
+
+#
+# MODEL = "gemma3:1b"
+# OLLAMA_BASE_URL = "http://localhost:11434"
+
 
 # -----------------------------
 # Lifespan (시작/종료 처리)
@@ -74,6 +87,7 @@ app.include_router(album_router.router)
 app.include_router(recommend_router.router)
 app.include_router(bookmark_router.router)
 app.include_router(chatbot_router.router)
+app.include_router(theme_router.router)
 app.include_router(review_router.router)
 
 # -----------------------------
@@ -93,6 +107,7 @@ async def preload_model():
 
     except Exception as e:
         print(f"모델 preload 실패 : {e}")
+
 
 
 # -----------------------------
