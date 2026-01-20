@@ -32,3 +32,4 @@ sentence_transformers
 tf-keras
 
 aiomysql
+pymysql

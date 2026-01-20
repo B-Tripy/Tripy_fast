@@ -47,13 +47,13 @@ async def lifespan(app: FastAPI):
         # await plan_redis.preload_redis()
 
         # album_router 모델 로드
-        # album_router.load_model(app.state)
+        album_router.load_model(app.state)
 
         yield  # 서버 가동 중
 
         print("----- Server Shutting Down -----")
         # album_router 메모리 정리
-        # album_router.clear_model(app.state)
+        album_router.clear_model(app.state)
 
     except Exception as e:
         print(f"모델 preload 실패 또는 album_router 실패: {e}")
@@ -93,20 +93,20 @@ app.include_router(review_router.router)
 # -----------------------------
 # Ollama 모델 preload
 # -----------------------------
-@app.on_event("startup")
-async def preload_model():
-    try:
-        client = olla.AsyncClient()
-        # 빈 프롬프트로 모델 로드 + 영구 유지
-        await client.generate(
-            model=MODEL,
-            prompt=" ",
-            keep_alive=-1
-        )
-        print(f"{MODEL} 모델이 미리 로드되었습니다. (메모리에 영구 유지)")
-
-    except Exception as e:
-        print(f"모델 preload 실패 : {e}")
+# @app.on_event("startup")
+# async def preload_model():
+#     try:
+#         client = olla.AsyncClient()
+#         # 빈 프롬프트로 모델 로드 + 영구 유지
+#         await client.generate(
+#             model=MODEL,
+#             prompt=" ",
+#             keep_alive=-1
+#         )
+#         print(f"{MODEL} 모델이 미리 로드되었습니다. (메모리에 영구 유지)")
+#
+#     except Exception as e:
+#         print(f"모델 preload 실패 : {e}")
 
 
 
