@@ -1,3 +1,5 @@
+version: "3.8"
+
 name: tripy_ai
 
 services:
@@ -9,7 +11,7 @@ services:
     ports:
       - "8000:8000"
     networks:
-      - tripyserver
+      - aiserver
     volumes:
       # 소스코드
       # - .:/app  # 배포 시에는 이미지 안에 코드가 포함되어야 함.
@@ -17,18 +19,13 @@ services:
       - ./model:/app/model
     env_file:
       - .env
-    environment:
-      - REDIS_HOST=tripy_redis
-      # - OLLAMA_HOST=http://ollama:11434 # Ollama 컨테이너 주소
-      - CHROMA_HOST=chroma # Chroma 컨테이너 주소
-      - CHROMA_PORT=8000
-
+   
   # # 2. Ollama (LLM 실행 엔진)
   # tripy_ollama:
   #   image: ollama/ollama:latest
   #   container_name: ollama
   #   networks:
-  #     - tripyserver
+  #     - aiserver
   #   ports:
   #     - "11434:11434" # 외부에서 테스트할 때 필요
   #   volumes:
@@ -39,16 +36,16 @@ services:
     image: chromadb/chroma:latest
     container_name: chroma
     networks:
-      - tripyserver
+      - aiserver
     ports:
       - "8001:8000" # 8000은 FastAPI가 쓰니까 충돌 방지로 8001 매핑
     volumes:
       - chroma_storage:/chroma/chroma # 벡터 데이터 보존 (중요!)
 
 networks:
-  tripyserver:
-    external: true
+  aiserver:
+    driver: bridge
 
 volumes:
-  ollama_storage:
+  # ollama_storage:
   chroma_storage:
