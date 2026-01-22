@@ -18,12 +18,13 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
 import uuid
 
-MODEL_NAME = os.getenv("OLLAMA_MODEL", "gemma3:4b")
+MODEL_NAME = "gemma3:1b"
 
 TEXT_SPLITTER = RecursiveCharacterTextSplitter(chunk_size=250, chunk_overlap=100)
 
 chroma_client = None
 collection = None
+
 
 def get_collection():
     global chroma_client, collection
@@ -31,15 +32,18 @@ def get_collection():
         print("Initializing ChromaDB and Embeddings...")
         chroma_client = chromadb.PersistentClient(path="./chroma_db")
         print("Downloading/Loading Embedding Model (this may take a while)...")
-        sentence_transformer_ef = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
-        collection = chroma_client.get_or_create_collection(name="samsung_docs", embedding_function=sentence_transformer_ef)
+        sentence_transformer_ef = embedding_functions.SentenceTransformerEmbeddingFunction(
+            model_name="all-MiniLM-L6-v2")
+        collection = chroma_client.get_or_create_collection(name="rag_docs",
+                                                            embedding_function=sentence_transformer_ef)
         print("ChromaDB Initialized.")
     return collection
+
 
 def ingest_document(file_path: str, original_filename: str):
     ext = os.path.splitext(original_filename)[1].lower()
     text = ""
-    
+
     if ext == ".pdf":
         reader = PdfReader(file_path)
         for page in reader.pages:
@@ -53,17 +57,17 @@ def ingest_document(file_path: str, original_filename: str):
             with open(file_path, "r", encoding="cp949") as f:
                 text = f.read()
     else:
-        return 0 # Unsupported
+        return 0  # Unsupported
 
     if not text.strip():
         return 0
-    
+
     print(f"Splitting text for {original_filename}...")
     chunks = TEXT_SPLITTER.split_text(text)
-    
+
     ids = [str(uuid.uuid4()) for _ in chunks]
     metadatas = [{"source": original_filename[:-4]} for _ in chunks]
-    
+
     print(f"Adding {len(chunks)} chunks to collection...")
     col = get_collection()
     col.add(
@@ -74,7 +78,7 @@ def ingest_document(file_path: str, original_filename: str):
     return len(chunks)
 
 
-async def query_rag_info(query_text:str, source_filter: str = None):
+async def query_rag_info(query_text: str, source_filter: str = None):
     # 1. Retrieve relevant docs
     where_clause = None
     where_clause = {"source": "2026년 1월 1일 ~ 2월 28일.pdf"}
@@ -83,11 +87,16 @@ async def query_rag_info(query_text:str, source_filter: str = None):
     results = col.query(
         query_texts=[query_text],
         n_results=3,
-        where=where_clause
+        # where=where_clause
     )
+
+    print("===== RAW RAG RESULT =====")
+    print(results)
+    print("==========================")
 
     context_text = "\n\n".join(results['documents'][0])
     return context_text
+
 
 def query_rag(query_text: str, source_filter: str = None):
     # 1. Retrieve relevant docs
@@ -99,27 +108,25 @@ def query_rag(query_text: str, source_filter: str = None):
     col = get_collection()
     results = col.query(
         query_texts=[query_text],
-        n_results=3,
-        where=where_clause
+        n_results=3
     )
-    
     context_text = "\n\n".join(results['documents'][0])
-    
+
     # 2. Construct Prompt
     prompt = f"""
     You are a helpful assistant for Samsung Electronics employees.
     Use the following pieces of context to answer the question at the end.
     If you don't know the answer, just say that you don't know.
-    
+
     Context:
     대답은 한글로 해줘. 짧게 단답형으로 핵심만
     {context_text}
-    
+
     Question: {query_text}
-    
+
     Answer:
     """
-    
+
     try:
         response = ollama.chat(model=MODEL_NAME, messages=[
             {'role': 'user', 'content': prompt},
@@ -128,12 +135,14 @@ def query_rag(query_text: str, source_filter: str = None):
     except Exception as e:
         return f"Error communicating with Ollama: {str(e)}"
 
+
 def get_document_count():
     col = get_collection()
     return col.count()
 
+
 def get_unique_sources():
-    # ChromaDB doesn't have a direct 'select distinct metadata' fast path, 
+    # ChromaDB doesn't have a direct 'select distinct metadata' fast path,
     # but for a local agent, fetching metadata is okay.
     # Optimized approach: get all items, extract sources.
     # Note: potentially slow for HUGE dbs, but fine for local RAG.
@@ -145,16 +154,22 @@ def get_unique_sources():
             sources.add(meta["source"])
     return list(sources)
 
-# def reset_database():
-#     global chroma_client, collection
-#
-#     # Ensure initialized to delete? Or just try?
-#     if chroma_client is None:
-#          get_collection() # Initialize first
-#
-#     chroma_client.delete_collection("samsung_docs")
-#     # Re-create immediately
-#     # Force re-init of collection obj
-#     collection = None
-#     get_collection()
-#     return True
+
+def reset_database():
+    global chroma_client, collection
+
+    # client가 아직 없으면 먼저 생성
+    if chroma_client is None:
+        chroma_client = chromadb.PersistentClient(path="./chroma_db")
+
+    try:
+        chroma_client.delete_collection("rag_docs")
+        print("Chroma collection deleted.")
+    except Exception as e:
+        # 컬렉션이 없을 수도 있음 → 무시
+        print("Collection delete skipped:", e)
+
+    # 🔥 핵심: 메모리 참조 끊기
+    collection = None
+
+    return True

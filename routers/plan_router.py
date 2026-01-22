@@ -10,6 +10,7 @@ from typing import List
 import shutil
 import os
 from rag import rag_service
+from rag.rag_service import reset_database
 
 UPLOAD_DIR = "pdf"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -52,6 +53,7 @@ def upload_documents(files: List[UploadFile] = File(...)):
 
     return {"status": "success", "processed_files": processed_files, "total_chunks": total_chunks}
     # return "ok"
+
 
 @router.get("/stats")
 def get_stats():
@@ -118,18 +120,17 @@ async def generate(request: PlanRequest):
         ### 크로마 pdf읽어와서 그거를 prompt에 넣어주면 됨.
 
         query_text = f'''
-            {request.destination}지역의 
-            휴관일을 아주 간단하게 답답형으로 알려줘.
+            {request.destination} 지역의 
+            휴관과 공사일정을 아주 간단하게 답답형으로 알려줘.
         '''
+
 
         rag_info = await rag_service.query_rag_info(query_text)
 
         print(rag_info)
         prompt = f"""
          너는 여행 일정 플래너 AI야.
-        목적지: {request.destination} 의 휴관일이야
-        해당 지역에 휴관일도 같이 결과로 넣어줘.
-        휴관일 정보는 {rag_info}야.
+        
         
          - 출발지: {request.departure}
          - 목적지: {request.destination}
@@ -140,11 +141,16 @@ async def generate(request: PlanRequest):
          - 연령대: {request.ageGroup}
          - 여행 목적: {request.purpose}
          - 추가 요청: {request.extra}
-
+         
          위 조건을 반영해서
          1일차, 2일차 형식으로
          아침 / 점심 / 저녁 / 추천 장소를 포함해
          일정을 만들어줘.
+         
+         성산일출봉,천지연폭포 는 추천장소에 포함해줘
+         휴관일 정보는 {rag_info}야.
+         해당 지역에 1월 25일 이후의 휴관일도 같이 결과로 넣어줘.
+        
          
         """
 
@@ -182,3 +188,8 @@ def redis_get(request: PlanRequest):
     print(request.userId)
     # # answer = plan_redis.redis_select(str(request.userId))
     # return answer
+
+@router.post("/reset")
+def reset_db():
+    reset_database()
+    return {"status": "deleted"}
