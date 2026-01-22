@@ -7,7 +7,7 @@ services:
   tripy_fastapi:
     # [수정 1] build는 주석 처리하거나 둬도 되지만, image 이름이 제일 중요합니다!
     # "아이디/이미지이름:태그" 형식이어야 도커 허브에서 받아옵니다.
-    image: mic006016/tripy-ai:latest
+    image: mic006016/tripy-fastapi:latest
     
     container_name: fastapi
     ports:
@@ -24,7 +24,7 @@ services:
     # 서버 꺼지면 자동으로 다시 켜기 (필수)
     restart: unless-stopped
    
-  # 3. ChromaDB (그대로 유지)
+  # 2. ChromaDB (그대로 유지)
   tripy_chroma:
     image: chromadb/chroma:latest
     container_name: chroma

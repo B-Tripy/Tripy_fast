@@ -1,0 +1,64 @@
+name: deploy
+
+on:
+  push:
+    branches: ["master"]
+    paths:
+      - "**" # 모든 파일 변경 시 실행 (AI 서버는 구조가 단순해서 이렇게 해도 됨)
+
+jobs:
+  # 1. 이미지 빌드 & 도커 허브 업로드
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and Push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          # docker-compose.yml에 적은 이름과 100% 똑같이!
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tripy-fastapi:latest
+
+  # 2. AWS 서버 배포
+  deploy:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          script: |
+            # 1. AI 프로젝트 폴더로 이동
+            cd /home/ubuntu/Tripy_fast
+
+            # 2. 최신 설정 파일(docker-compose.yml) 받기
+            git pull origin master
+
+            # 3. 도커 허브 로그인
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+            # 4. 최신 이미지 다운로드 (Pull)
+            docker-compose pull
+
+            # 5. 기존 컨테이너 끄고 새거 실행 (Up)
+            docker-compose up -d --remove-orphans
+
+            # 6. 찌꺼기 이미지 정리
+            docker image prune -f
