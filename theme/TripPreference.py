@@ -1,5 +1,5 @@
 import os
-from theme.TripPreference import TripPreference
+# from theme.TripPreference import TripPreference
 from theme.TripSatisfaction import TripSatisfaction
 from pydantic import BaseModel
 from fastapi import APIRouter, UploadFile, File, Request, HTTPException, Depends
