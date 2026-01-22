@@ -1,6 +1,36 @@
-.venv/
-.idea/
-.env
+# 1. 파이썬 필수 (컴파일된 파일 무시)
 __pycache__/
-*/__pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+
+# 2. 가상환경 폴더 (내 컴퓨터 설정이므로 올리면 안 됨)
+venv/
+.venv/
+env/
+
+# 3. [중요] 환경변수/비밀번호 파일 (해킹 방지)
+.env
+.env.local
+
+# 4. [중요] AI 모델 및 데이터셋 (용량이 커서 깃허브 거부당함)
+model/
+models/
+*.pt
+*.pth
+*.h5
+*.ckpt
+*.safetensors
+*.onnx
+
+# 5. 데이터 저장소 (DB 데이터 파일)
+chroma_storage/
+ollama_storage/
+
+# 6. IDE 설정 파일 (VS Code, PyCharm 등)
+.idea/
+.vscode/
+*.swp
+
+# 7. 운영체제 잡동사니
+.DS_Store
+Thumbs.db
