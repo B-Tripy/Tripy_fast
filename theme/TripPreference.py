@@ -1,82 +1,64 @@
-import os
-from theme.TripPreference import TripPreference
-from theme.TripSatisfaction import TripSatisfaction
-from pydantic import BaseModel
-from fastapi import APIRouter, UploadFile, File, Request, HTTPException, Depends
-from typing import Optional
-# ml pickle을 이용하여 선호도 획득 znddi
+# node로 부터 사진 category 분류 전달 받음
+# tripy_prefer_model.pkl 모델에 param 전달
+# 결과값 받아서 다시 node에 전달
 
-router = APIRouter(
-    prefix="/theme",
-    tags=["theme"],
-)
+import pandas as pd
+import pickle
 
-class PreferenceRequest(BaseModel):
-    TripId:Optional[int]=None
-    PhotoId: Optional[int] = None
-    category:str
-    val:Optional[int]=None
+class TripPreference:
+    def __init__(self,arguments:list):
+        self.arguments = arguments
 
-@router.post("/preference")
-def preference(request:list[PreferenceRequest]):
+    def run_preference(self):
+        print("run_preference param",self.arguments);
+        # pkl 파일 선언
+        with open('./theme/tripy_prefer_model.pkl', 'rb') as f:
+            model = pickle.load(f)
 
-    try:
-        print('request',request)
-        tp = TripPreference(request)
-        result = tp.run_preference()
-        print('preference result',result)
-        return {"result" : result}
-    except Exception as e:
-        return {"error" : str(e)}
+        items = self.arguments
 
-# class SatisfyRequest(BaseModel):
-#     TripId:Optional[int]=None
-#     PhotoId: Optional[int] = None
-#     contents:str
-# @app.get("/theme/satisfy")
-# def satisfy(request:SatisfyRequest):
-#     try:
-#         print('-----------------------')
-#         print('satisfy request/n',request)
-#         print('-----------------------')
-#
-#         ts = TripSatisfaction(request)
-#         result = ts.run_Satisfaction()
-#         print('satisfy result',result)
-#         return {"result" : result}
-#     except Exception as e:
-#         return {"error" : str(e)}
+        print('items=========',items)
+        # 원하는 results 형태로 변환
 
-# ollama 를 이용하여 만족도 획득 znddi
-class SatisfactionRequest(BaseModel):
-    TripId:Optional[int]=None
-    PhotoId: Optional[int] = None
-    contents:str
-@router.post("/satisfaction")
-# def satisfaction(request:SatisfactionRequest):
-async def satisfaction():
-    param = """
-    충청남도 공주시에 있는 갑사에 다녀왔는데,
-    공기도 맑고 조용하고, 하늘도 시린듯이 파랗게 빛났어 절로 감탄이 나왔지
-    갑사에 오르는 길은 힘들지 않았지.
-    계룡산을 넘어오면서 계곡에 있는 많은 음식점이 있었는데 상품은 죄다 중국산이어서 좀 그랬어
-    음식은 비쌋고 맛도 머 그럭저럭 좀 관리가 필요한것 같아
-    조금 내려오니 시내버스 승강장이 있던데 왜케 지저분한지 담배는 왜 아무데서나 피는지 조금 괴로웠어
-    """
-    try:
-        print('-----------------------')
-        print('satisfaction request/n', param)
-        print('-----------------------')
+        data = []
+        data = convert_to_matrix(items)
 
-        ts = TripSatisfaction(param)
-        result = await ts.run_Satisfaction()
-        print('satisfaction result',result)
-        return {"result" : result}
-    except Exception as e:
-        return {"error" : str(e)}
+        # print('data',data)
 
-@router.get("/ai/theme/connectfastApi")
-def connect_fastapi():
-    result = "ok good"
-    return {"result":result}
+        # data 가 넘어왔다고 치고
+        # data = [['a',0,0,1,0,0,0,1,0],['b',0,1,1,0,1,0,0,0],['c',1,1,1,1,1,1,1,1]]
 
+        # column 선언
+        cols = ['sea', 'mountain', 'forest', 'building', 'city', 'person', 'culture', 'food']
+
+        # 1행 과 나머지행 으로 분리
+        row1 = [i[0] for i in data]
+        row2 = [i[1] for i in data]
+        rows = [i[2:] for i in data]
+
+        # 만들어진 ml 에 테우기
+        param = pd.DataFrame(data=rows, columns = cols)
+        prefer_classification = model.predict(param)
+
+        # 결과가 [1 2 1] 이따구로 나와서 [1,2,1] 형태로 변경
+        prefer_classification_list = prefer_classification.tolist()
+
+        # print('row',row);
+        # print('rows',rows);
+        # print('prefer_classification_list', prefer_classification_list);
+
+        # 던지는 결과를 [[a,1],[b,2],[c,1]] 와 같이 이차원배열고 변경
+        result = [[r, p, z] for r, p, z in zip(row1,row2, prefer_classification_list)]
+
+        print("preference result",result)
+
+        return result
+
+def convert_to_matrix(arguments):
+    if not arguments:
+        return []
+    trip_id = arguments[0].TripId
+    photo_id = arguments[0].PhotoId
+    vals = [p.val for p in arguments]
+
+    return [[trip_id,photo_id]+ vals]
